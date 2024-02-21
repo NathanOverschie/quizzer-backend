@@ -1,16 +1,14 @@
 package com.example.quizzer;
 
-import java.util.List;
-import java.util.Stack;
-
-;
+import java.util.*;
 
 public class QuestionAndAnswerManager implements IQuestionAndAnswerManager {
     private final IQuestionProvider questionProvider;
 
     private int counter = 0;
 
-    private Stack<QuestionWithAnswerAndFalseAnswers> questionStack;
+    Map<Integer, String> correctAnswers = new HashMap<>();
+
     QuestionAndAnswerManager(IQuestionProvider questionProvider){
         this.questionProvider = questionProvider;
     }
@@ -31,18 +29,32 @@ public class QuestionAndAnswerManager implements IQuestionAndAnswerManager {
 
     @Override
     public List<QuestionWithPossibleAnswers> getQuestionsWithPossibleAnswers(int amount) throws NotEnoughQuestionsException {
+        List<QuestionWithAnswerAndFalseAnswers> questionsWithAnswerAndFalseAnswers = null;
         try {
-            return questionProvider.getQuestionsWithAnswerAndFalseAnswers()
-                    .stream()
-                    .map(this::HideAnswer)
-                    .toList();
+            questionsWithAnswerAndFalseAnswers = questionProvider.getQuestionsWithAnswerAndFalseAnswers();
         } catch (Exception e) {
             throw new NotEnoughQuestionsException();
         }
+
+        List<QuestionWithPossibleAnswers> result = new ArrayList<>();
+
+        for (QuestionWithAnswerAndFalseAnswers questionsWithAnswerAndFalseAnswer : questionsWithAnswerAndFalseAnswers) {
+            QuestionWithPossibleAnswers questionWithPossibleAnswers = HideAnswer(questionsWithAnswerAndFalseAnswer);
+            result.add(questionWithPossibleAnswers);
+            correctAnswers.put(questionWithPossibleAnswers.ID(), questionsWithAnswerAndFalseAnswer.answer());
+        }
+
+        return result;
     }
 
     @Override
-    public boolean checkAnswer(int ID, String Answer) {
-        return false;
+    public boolean checkAnswer(int ID, String Answer) throws CorrectAnswerNotFoundException {
+        String correctAnswer = correctAnswers.get(ID);
+
+        if(correctAnswer == null){
+            throw new CorrectAnswerNotFoundException();
+        }
+
+        return Answer.equals(correctAnswer);
     }
 }

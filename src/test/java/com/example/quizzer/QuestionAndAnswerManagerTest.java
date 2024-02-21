@@ -2,9 +2,6 @@ package com.example.quizzer;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.internal.matchers.Not;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +14,7 @@ class QuestionAndAnswerManagerTest {
     private QuestionAndAnswerManager questionAndAnswerManager;
     private fakeQuestionProvider questionProvider;
 
-    class fakeQuestionProvider implements IQuestionProvider{
+    static class fakeQuestionProvider implements IQuestionProvider{
         private int counter = 0;
 
         public String getCorrectAnswer(QuestionWithPossibleAnswers questionWithPossibleAnswers){
@@ -48,7 +45,7 @@ class QuestionAndAnswerManagerTest {
         }
 
         @Override
-        public List<QuestionWithAnswerAndFalseAnswers> getQuestionsWithAnswerAndFalseAnswers() throws Exception {
+        public List<QuestionWithAnswerAndFalseAnswers> getQuestionsWithAnswerAndFalseAnswers() {
             ArrayList<QuestionWithAnswerAndFalseAnswers> questionWithAnswerAndFalseAnswers = new ArrayList<>();
 
             for(int i = 0; i < 10 ; i ++){
@@ -106,7 +103,7 @@ class QuestionAndAnswerManagerTest {
             //Assert
             assertTrue(result);
 
-        } catch (NotEnoughQuestionsException e) {
+        } catch (NotEnoughQuestionsException | CorrectAnswerNotFoundException e) {
             fail();
         }
     }
@@ -129,7 +126,7 @@ class QuestionAndAnswerManagerTest {
             //Assert
             assertFalse(result);
 
-        } catch (NotEnoughQuestionsException e) {
+        } catch (NotEnoughQuestionsException | CorrectAnswerNotFoundException e) {
             fail();
         }
     }

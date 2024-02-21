@@ -6,5 +6,5 @@ public interface IQuestionAndAnswerManager {
 
     List<QuestionWithPossibleAnswers> getQuestionsWithPossibleAnswers(int amount) throws NotEnoughQuestionsException;
 
-    boolean checkAnswer(int ID, String Answer);
+    boolean checkAnswer(int ID, String Answer) throws CorrectAnswerNotFoundException;
 }
