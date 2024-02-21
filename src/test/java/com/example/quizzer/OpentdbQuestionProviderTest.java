@@ -1,7 +1,6 @@
 package com.example.quizzer;
 
 import com.fasterxml.jackson.core.io.JsonEOFException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -84,14 +83,9 @@ class OpentdbQuestionProviderTest {
         //Setup
         jsonProvider.setException(new Exception());
 
-        try {
-            //Act
-            questionProvider.getQuestionWithAnswerAndFalseAnswers();
-
-            //Assert
-            fail();
-        }catch (Exception ignored){
-        }
+        //Act
+        assertThrows(Exception.class, () ->
+                questionProvider.getQuestionWithAnswerAndFalseAnswers());
     }
 
     @Test
@@ -99,15 +93,9 @@ class OpentdbQuestionProviderTest {
         //Setup
         jsonProvider.setJsonString("[[");
 
-        try {
-            //Act
-            questionProvider.getQuestionWithAnswerAndFalseAnswers();
-
-            //Assert
-            fail();
-        } catch (Exception e) {
-            assertInstanceOf(JsonEOFException.class, e);
-        }
+        //Act & Assert
+        assertThrows(JsonEOFException.class, () ->
+                questionProvider.getQuestionWithAnswerAndFalseAnswers());
     }
 
     @Test
@@ -115,15 +103,9 @@ class OpentdbQuestionProviderTest {
         //Setup
         jsonProvider.setJsonString("[{\"a\":\"b\"}]");
 
-        try {
-            //Act
-            questionProvider.getQuestionWithAnswerAndFalseAnswers();
-
-            //Assert
-            fail();
-        } catch (Exception e) {
-            assertInstanceOf(OpentdbException.class, e);
-        }
+        //Act & Assert
+        assertThrows(OpentdbException.class, () ->
+                questionProvider.getQuestionWithAnswerAndFalseAnswers());
     }
 
     private static String getJsonStringOfQuestionWithAnswerAndFalseAnswers(QuestionWithAnswerAndFalseAnswers questionWithAnswerAndFalseAnswers) {
