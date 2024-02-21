@@ -20,9 +20,9 @@ import java.util.stream.StreamSupport;
  *
  */
 public class OpentdbQuestionProvider implements IQuestionProvider {
-    private final IJSONProvider jsonProvider;
+    private final IQuestionsJSONProvider jsonProvider;
 
-    OpentdbQuestionProvider(IJSONProvider jsonProvider){
+    OpentdbQuestionProvider(IQuestionsJSONProvider jsonProvider){
         this.jsonProvider = jsonProvider;
     }
 
@@ -54,7 +54,7 @@ public class OpentdbQuestionProvider implements IQuestionProvider {
 
     @Override
     public List<QuestionWithAnswerAndFalseAnswers> getQuestionsWithAnswerAndFalseAnswers() throws Exception {
-        JsonNode questionsJSON = jsonProvider.getJSON();
+        JsonNode questionsJSON = jsonProvider.getJSON(5);
 
         List<QuestionWithAnswerAndFalseAnswers> result = new ArrayList<>();
 

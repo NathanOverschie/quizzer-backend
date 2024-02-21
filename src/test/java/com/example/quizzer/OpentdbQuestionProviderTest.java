@@ -17,7 +17,7 @@ class OpentdbQuestionProviderTest {
     private IQuestionProvider questionProvider;
     private fakeJSONProvider jsonProvider;
 
-    static class fakeJSONProvider implements IJSONProvider {
+    static class fakeJSONProvider implements IQuestionsJSONProvider {
         private String jsonString = null;
         private Exception exception = null;
         public void setJsonString(String jsonString) {
@@ -29,13 +29,18 @@ class OpentdbQuestionProviderTest {
         }
 
         @Override
-        public JsonNode getJSON() throws Exception {
+        public JsonNode getJSON(int amount) throws Exception {
             if(exception != null){
                 throw exception;
             }
 
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readTree(jsonString);
+        }
+
+        @Override
+        public JsonNode getMaxJSON() throws Exception {
+            return getJSON(50);
         }
     }
 

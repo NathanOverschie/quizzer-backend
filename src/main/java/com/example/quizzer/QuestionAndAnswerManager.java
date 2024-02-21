@@ -29,7 +29,7 @@ public class QuestionAndAnswerManager implements IQuestionAndAnswerManager {
 
     @Override
     public List<QuestionWithPossibleAnswers> getQuestionsWithPossibleAnswers(int amount) throws NotEnoughQuestionsException {
-        List<QuestionWithAnswerAndFalseAnswers> questionsWithAnswerAndFalseAnswers = null;
+        List<QuestionWithAnswerAndFalseAnswers> questionsWithAnswerAndFalseAnswers;
         try {
             questionsWithAnswerAndFalseAnswers = questionProvider.getQuestionsWithAnswerAndFalseAnswers();
         } catch (Exception e) {

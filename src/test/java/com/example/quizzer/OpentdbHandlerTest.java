@@ -4,13 +4,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.concurrent.TimeUnit;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 
 class OpentdbHandlerTest {
-    private IJSONProvider opentdbHandler;
+    private IQuestionsJSONProvider opentdbHandler;
 
     @BeforeEach
     void init(){
@@ -20,14 +18,14 @@ class OpentdbHandlerTest {
     @Test
     void getQuestionsDoesNotThrow() {
         assertDoesNotThrow(() -> {
-            opentdbHandler.getJSON();
+            opentdbHandler.getJSON(5);
         });
     }
 
     @Test
-    void getQuestionReturnsFiveOnDefault(){
+    void getQuestionReturnsFive(){
         try {
-            JsonNode questionsJSON = opentdbHandler.getJSON();
+            JsonNode questionsJSON = opentdbHandler.getJSON(5);
 
             assertTrue(questionsJSON.isArray());
             assertEquals(questionsJSON.size(), 5);
@@ -36,10 +34,23 @@ class OpentdbHandlerTest {
         }
     }
 
+
+    @Test
+    void getQuestionReturnsTwenty(){
+        try {
+            JsonNode questionsJSON = opentdbHandler.getJSON(20);
+
+            assertTrue(questionsJSON.isArray());
+            assertEquals(questionsJSON.size(), 20);
+        } catch (Exception e) {
+            fail(e.getMessage(), e);
+        }
+    }
+
     @Test
     void getQuestionNotNull(){
         try {
-            JsonNode questions = opentdbHandler.getJSON();
+            JsonNode questions = opentdbHandler.getJSON(5);
             assertNotNull(questions);
         } catch (Exception e) {
             fail(e.getMessage(), e);
@@ -49,9 +60,8 @@ class OpentdbHandlerTest {
     @Test
     void getQuestionsMultipleRequestsNotNull(){
         try {
-            for(int i = 0; i < 5; i++) {
-                assertNotNull(opentdbHandler.getJSON());
-                TimeUnit.MILLISECONDS.sleep(5100);
+            for(int i = 0; i < 10; i++) {
+                assertNotNull(opentdbHandler.getJSON(5));
             }
         } catch (Exception e) {
             fail(e.getMessage(), e);

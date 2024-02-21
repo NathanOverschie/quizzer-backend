@@ -7,51 +7,55 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
 
-public class OpentdbHandler implements IJSONProvider {
+public class OpentdbHandler implements IQuestionsJSONProvider {
 
-    // url to the opentdb endpoint
-    private static final URI questionsURI = URI.create("https://opentdb.com/api.php?amount=5");
+    private static final String url = "https://opentdb.com/api.php";
+    private static Instant lastUsed = null;
+    private static final int delayBetweenRequestsInMillis = 5000;
+    private static final int maxAmount = 50;
 
-    public JsonNode getJSON() throws Exception {
+    public JsonNode getJSON(int amount) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
 
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(questionsURI)
+                .uri(URI.create(url + "?amount=" + amount))
                 .GET()
                 .build();
 
-        try{
-            do {
-                // get response
-                HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        Instant now = Instant.now();
 
-                int statusCode = response.statusCode();
+        // wait until the endpoint is available
+        if(lastUsed != null) {
+            Instant available = lastUsed.plus(delayBetweenRequestsInMillis, ChronoUnit.MILLIS);
+            if (available.isAfter(now)) {
+                TimeUnit.MILLISECONDS.sleep(now.until(available, ChronoUnit.MILLIS));
+            }
+        }
 
-                if (statusCode != 200) {
-                    // not OK
-                    if (statusCode == 429) {
-                        // too many requests
-                        // sleep to let the server cool down
-                        // afterward try again
-                        TimeUnit.SECONDS.sleep(6);
-                    } else {
-                        // problem with the server
-                        throw new OpentdbException();
-                    }
-                } else {
-                    // OK
-                    JsonNode jsonNode = mapper.readTree(response.body());
-                    if (jsonNode.get("response_code").asInt() != 0)
-                        throw new OpentdbException();
+        try {
+            // get response
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-                    return jsonNode.get("results");
-                }
-            }while(true);
-        } catch (Exception e){
+            lastUsed = Instant.now();
+
+            JsonNode jsonNode = mapper.readTree(response.body());
+            if (jsonNode.get("response_code").asInt() != 0)
+                throw new OpentdbException();
+
+            return jsonNode.get("results");
+
+        } catch (Exception e) {
             throw new OpentdbException(e);
         }
+    }
+
+    @Override
+    public JsonNode getMaxJSON() throws Exception {
+        return getJSON(maxAmount);
     }
 }
