@@ -21,6 +21,7 @@ public class QuestionAndAnswerManager implements IQuestionAndAnswerManager {
     private QuestionWithPossibleAnswers HideAnswer(QuestionWithAnswerAndFalseAnswers questionWithAnswerAndFalseAnswers) {
         List<String> possibleAnswers = new ArrayList<>(questionWithAnswerAndFalseAnswers.falseAnswers());
         possibleAnswers.add(questionWithAnswerAndFalseAnswers.answer());
+        Collections.shuffle(possibleAnswers);
 
         return new QuestionWithPossibleAnswers(
                         newId(),
