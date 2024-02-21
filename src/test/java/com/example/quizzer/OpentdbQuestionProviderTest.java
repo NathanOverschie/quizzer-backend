@@ -1,5 +1,7 @@
 package com.example.quizzer;
 
+import com.fasterxml.jackson.core.io.JsonEOFException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,12 +20,21 @@ class OpentdbQuestionProviderTest {
 
     static class fakeJSONProvider implements JSONProvider {
         private String jsonString = null;
+        private Exception exception = null;
         public void setJsonString(String jsonString) {
             this.jsonString = jsonString;
         }
 
+        public void setException(Exception exception) {
+            this.exception = exception;
+        }
+
         @Override
         public JsonNode getJSON() throws Exception {
+            if(exception != null){
+                throw exception;
+            }
+
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readTree(jsonString);
         }
@@ -36,7 +47,7 @@ class OpentdbQuestionProviderTest {
     }
 
     @Test
-    void getQuestionWithAnswerAndFalseAnswers(){
+    void getQuestionWithAnswerAndFalseAnswersHappyFlow(){
         //Setup
         List<QuestionWithAnswerAndFalseAnswers> expected = new ArrayList<>();
 
@@ -65,6 +76,53 @@ class OpentdbQuestionProviderTest {
             assertEquals(expected, actual);
         } catch (Exception e) {
             fail(e.getMessage(), e);
+        }
+    }
+
+    @Test
+    void getQuestionWithAnswerAndFalseAnswersExceptionThrown(){
+        //Setup
+        jsonProvider.setException(new Exception());
+
+        try {
+            //Act
+            questionProvider.getQuestionWithAnswerAndFalseAnswers();
+
+            //Assert
+            fail();
+        }catch (Exception ignored){
+        }
+    }
+
+    @Test
+    void getQuestionWithAnswerAndFalseAnswersMalformedJSON(){
+        //Setup
+        jsonProvider.setJsonString("[[");
+
+        try {
+            //Act
+            questionProvider.getQuestionWithAnswerAndFalseAnswers();
+
+            //Assert
+            fail();
+        } catch (Exception e) {
+            assertInstanceOf(JsonEOFException.class, e);
+        }
+    }
+
+    @Test
+    void getQuestionWithAnswerAndFalseAnswersJSONWrongStructure(){
+        //Setup
+        jsonProvider.setJsonString("[{\"a\":\"b\"}]");
+
+        try {
+            //Act
+            questionProvider.getQuestionWithAnswerAndFalseAnswers();
+
+            //Assert
+            fail();
+        } catch (Exception e) {
+            assertInstanceOf(OpentdbException.class, e);
         }
     }
 
