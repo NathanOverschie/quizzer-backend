@@ -94,6 +94,24 @@ class QuestionAndAnswerManagerTest {
     }
 
     @Test
+    void getQuestionsWithPossibleAnswersHundred(){
+        try {
+            //Setup
+            List<QuestionWithPossibleAnswers> questionsWithPossibleAnswers = questionAndAnswerManager.getQuestionsWithPossibleAnswers(100);
+
+            //Act & Assert
+            assertEquals(100, questionsWithPossibleAnswers.size());
+            assertTrue(
+                    questionsWithPossibleAnswers
+                            .stream()
+                            .allMatch(this::validQuestionAndAnswer));
+
+        } catch (NotEnoughQuestionsException e) {
+            fail();
+        }
+    }
+
+    @Test
     void getQuestionsWithPossibleAnswersNoUnnecessaryRequests(){
         try{
             //Act

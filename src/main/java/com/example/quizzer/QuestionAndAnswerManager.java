@@ -31,16 +31,7 @@ public class QuestionAndAnswerManager implements IQuestionAndAnswerManager {
 
     @Override
     public List<QuestionWithPossibleAnswers> getQuestionsWithPossibleAnswers(int amount) throws NotEnoughQuestionsException {
-        if(questionStack.size() < amount){
-            try {
-                questionStack.addAll(questionProvider.getMaxQuestionsWithAnswerAndFalseAnswers());
-            } catch (Exception e) {
-                throw new NotEnoughQuestionsException();
-            }
-        }
-
-        List<QuestionWithAnswerAndFalseAnswers> questionsWithAnswerAndFalseAnswers = questionStack.subList(0, amount);
-        questionStack = questionStack.subList(amount, questionStack.size());
+        List<QuestionWithAnswerAndFalseAnswers> questionsWithAnswerAndFalseAnswers = getViaStack(amount);
 
         List<QuestionWithPossibleAnswers> result = new ArrayList<>();
 
@@ -51,6 +42,20 @@ public class QuestionAndAnswerManager implements IQuestionAndAnswerManager {
         }
 
         return result;
+    }
+
+    private List<QuestionWithAnswerAndFalseAnswers> getViaStack(int amount) throws NotEnoughQuestionsException {
+        while(questionStack.size() < amount){
+            try {
+                questionStack.addAll(questionProvider.getMaxQuestionsWithAnswerAndFalseAnswers());
+            } catch (Exception e) {
+                throw new NotEnoughQuestionsException();
+            }
+        }
+
+        List<QuestionWithAnswerAndFalseAnswers> questionsWithAnswerAndFalseAnswers = questionStack.subList(0, amount);
+        questionStack = questionStack.subList(amount, questionStack.size());
+        return questionsWithAnswerAndFalseAnswers;
     }
 
     @Override
