@@ -9,7 +9,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.TimeUnit;
 
-public class OpentdbHandler implements JSONProvider{
+public class OpentdbHandler implements IJSONProvider {
 
     // url to the opentdb endpoint
     private static final URI questionsURI = URI.create("https://opentdb.com/api.php?amount=5");

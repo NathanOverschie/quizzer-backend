@@ -10,7 +10,7 @@ import java.util.List;
 public class QuestionsController {
 
     @GetMapping("/questions")
-    public List<Question> Questions(){
+    public List<QuestionWithPossibleAnswers> Questions(){
         return new ArrayList<>();
     }
 }

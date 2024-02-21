@@ -1,21 +1,16 @@
 package com.example.quizzer;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.json.JSONArray;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.ResourceLock;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
 class OpentdbHandlerTest {
-    private JSONProvider opentdbHandler;
+    private IJSONProvider opentdbHandler;
 
     @BeforeEach
     void init(){

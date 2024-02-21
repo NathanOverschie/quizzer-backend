@@ -19,10 +19,10 @@ import java.util.stream.StreamSupport;
  * ]
  *
  */
-public class OpentdbQuestionProvider implements QuestionProvider{
-    private final JSONProvider jsonProvider;
+public class OpentdbQuestionProvider implements IQuestionProvider {
+    private final IJSONProvider jsonProvider;
 
-    OpentdbQuestionProvider(JSONProvider jsonProvider){
+    OpentdbQuestionProvider(IJSONProvider jsonProvider){
         this.jsonProvider = jsonProvider;
     }
 

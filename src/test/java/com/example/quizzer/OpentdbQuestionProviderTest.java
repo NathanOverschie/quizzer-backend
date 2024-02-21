@@ -14,10 +14,10 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 class OpentdbQuestionProviderTest {
-    private QuestionProvider questionProvider;
+    private IQuestionProvider questionProvider;
     private fakeJSONProvider jsonProvider;
 
-    static class fakeJSONProvider implements JSONProvider {
+    static class fakeJSONProvider implements IJSONProvider {
         private String jsonString = null;
         private Exception exception = null;
         public void setJsonString(String jsonString) {
