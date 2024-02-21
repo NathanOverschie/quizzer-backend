@@ -53,7 +53,7 @@ public class OpentdbQuestionProvider implements IQuestionProvider {
     }
 
     @Override
-    public List<QuestionWithAnswerAndFalseAnswers> getQuestionWithAnswerAndFalseAnswers() throws Exception {
+    public List<QuestionWithAnswerAndFalseAnswers> getQuestionsWithAnswerAndFalseAnswers() throws Exception {
         JsonNode questionsJSON = jsonProvider.getJSON();
 
         List<QuestionWithAnswerAndFalseAnswers> result = new ArrayList<>();

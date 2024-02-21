@@ -69,7 +69,7 @@ class OpentdbQuestionProviderTest {
 
         try {
             //Act
-            List<QuestionWithAnswerAndFalseAnswers> actual = questionProvider.getQuestionWithAnswerAndFalseAnswers();
+            List<QuestionWithAnswerAndFalseAnswers> actual = questionProvider.getQuestionsWithAnswerAndFalseAnswers();
 
             //Assert
             assertEquals(expected, actual);
@@ -85,7 +85,7 @@ class OpentdbQuestionProviderTest {
 
         //Act
         assertThrows(Exception.class, () ->
-                questionProvider.getQuestionWithAnswerAndFalseAnswers());
+                questionProvider.getQuestionsWithAnswerAndFalseAnswers());
     }
 
     @Test
@@ -95,7 +95,7 @@ class OpentdbQuestionProviderTest {
 
         //Act & Assert
         assertThrows(JsonEOFException.class, () ->
-                questionProvider.getQuestionWithAnswerAndFalseAnswers());
+                questionProvider.getQuestionsWithAnswerAndFalseAnswers());
     }
 
     @Test
@@ -105,7 +105,7 @@ class OpentdbQuestionProviderTest {
 
         //Act & Assert
         assertThrows(OpentdbException.class, () ->
-                questionProvider.getQuestionWithAnswerAndFalseAnswers());
+                questionProvider.getQuestionsWithAnswerAndFalseAnswers());
     }
 
     private static String getJsonStringOfQuestionWithAnswerAndFalseAnswers(QuestionWithAnswerAndFalseAnswers questionWithAnswerAndFalseAnswers) {
