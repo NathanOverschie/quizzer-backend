@@ -11,7 +11,11 @@ import java.util.List;
 
 @RestController
 public class QuestionsController {
-    private final QuestionAndAnswerManager manager = new QuestionAndAnswerManager(new OpentdbQuestionProvider(new OpentdbHandler()));
+    private final QuestionAndAnswerManager manager =
+            new QuestionAndAnswerManager(
+                    new OpentdbQuestionProvider(
+                            new OpentdbHandler()),
+                    1000);
 
     @GetMapping("/questions")
     public ResponseEntity<?> Questions(){

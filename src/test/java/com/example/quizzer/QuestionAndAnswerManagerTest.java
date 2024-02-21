@@ -64,7 +64,7 @@ class QuestionAndAnswerManagerTest {
     @BeforeEach
     void init(){
         questionProvider = new fakeQuestionProvider();
-        questionAndAnswerManager = new QuestionAndAnswerManager(questionProvider);
+        questionAndAnswerManager = new QuestionAndAnswerManager(questionProvider, 1000);
     }
 
     boolean validQuestionAndAnswer(QuestionWithPossibleAnswers questionWithPossibleAnswers){

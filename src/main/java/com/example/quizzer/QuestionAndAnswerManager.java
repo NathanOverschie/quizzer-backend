@@ -3,15 +3,16 @@ package com.example.quizzer;
 import java.util.*;
 
 public class QuestionAndAnswerManager implements IQuestionAndAnswerManager {
+    private int maxSavedAnswers = 1_000;
     private final IQuestionProvider questionProvider;
     private int counter = 0;
-
     private List<QuestionWithAnswerAndFalseAnswers> questionStack = new LinkedList<>();
 
-    private final Map<Integer, String> correctAnswers = new HashMap<>();
+    private final Map<Integer, String> correctAnswers = new LimitedHashMap<>(maxSavedAnswers);
 
-    QuestionAndAnswerManager(IQuestionProvider questionProvider){
+    QuestionAndAnswerManager(IQuestionProvider questionProvider, int maxSavedAnswers){
         this.questionProvider = questionProvider;
+        this.maxSavedAnswers = maxSavedAnswers;
     }
 
     private int newId(){
