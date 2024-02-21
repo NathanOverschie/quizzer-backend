@@ -7,7 +7,9 @@ public class QuestionAndAnswerManager implements IQuestionAndAnswerManager {
 
     private int counter = 0;
 
-    Map<Integer, String> correctAnswers = new HashMap<>();
+    private List<QuestionWithAnswerAndFalseAnswers> questionStack = new LinkedList<>();
+
+    private final Map<Integer, String> correctAnswers = new HashMap<>();
 
     QuestionAndAnswerManager(IQuestionProvider questionProvider){
         this.questionProvider = questionProvider;
@@ -29,12 +31,16 @@ public class QuestionAndAnswerManager implements IQuestionAndAnswerManager {
 
     @Override
     public List<QuestionWithPossibleAnswers> getQuestionsWithPossibleAnswers(int amount) throws NotEnoughQuestionsException {
-        List<QuestionWithAnswerAndFalseAnswers> questionsWithAnswerAndFalseAnswers;
-        try {
-            questionsWithAnswerAndFalseAnswers = questionProvider.getQuestionsWithAnswerAndFalseAnswers();
-        } catch (Exception e) {
-            throw new NotEnoughQuestionsException();
+        if(questionStack.size() < amount){
+            try {
+                questionStack.addAll(questionProvider.getMaxQuestionsWithAnswerAndFalseAnswers());
+            } catch (Exception e) {
+                throw new NotEnoughQuestionsException();
+            }
         }
+
+        List<QuestionWithAnswerAndFalseAnswers> questionsWithAnswerAndFalseAnswers = questionStack.subList(0, amount);
+        questionStack = questionStack.subList(amount, questionStack.size());
 
         List<QuestionWithPossibleAnswers> result = new ArrayList<>();
 

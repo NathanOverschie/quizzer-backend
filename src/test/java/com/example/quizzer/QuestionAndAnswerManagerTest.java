@@ -14,8 +14,11 @@ class QuestionAndAnswerManagerTest {
     private QuestionAndAnswerManager questionAndAnswerManager;
     private fakeQuestionProvider questionProvider;
 
+    private static final int maxAmountPerRequest = 50;
+
     static class fakeQuestionProvider implements IQuestionProvider{
         private int counter = 0;
+        public int requestsMade = 0;
 
         public String getCorrectAnswer(QuestionWithPossibleAnswers questionWithPossibleAnswers){
             return questionWithPossibleAnswers.possibleAnswers()
@@ -45,10 +48,12 @@ class QuestionAndAnswerManagerTest {
         }
 
         @Override
-        public List<QuestionWithAnswerAndFalseAnswers> getQuestionsWithAnswerAndFalseAnswers() {
+        public List<QuestionWithAnswerAndFalseAnswers> getMaxQuestionsWithAnswerAndFalseAnswers() {
             ArrayList<QuestionWithAnswerAndFalseAnswers> questionWithAnswerAndFalseAnswers = new ArrayList<>();
 
-            for(int i = 0; i < 10 ; i ++){
+            requestsMade++;
+
+            for(int i = 0; i < maxAmountPerRequest ; i ++){
                 questionWithAnswerAndFalseAnswers.add(getQuestionWithAnswerAndFalseAnswers());
             }
 
@@ -73,8 +78,11 @@ class QuestionAndAnswerManagerTest {
     @Test
     void getQuestionsWithPossibleAnswersFive(){
         try {
+            //Setup
             List<QuestionWithPossibleAnswers> questionsWithPossibleAnswers = questionAndAnswerManager.getQuestionsWithPossibleAnswers(5);
 
+            //Act & Assert
+            assertEquals(5, questionsWithPossibleAnswers.size());
             assertTrue(
                     questionsWithPossibleAnswers
                             .stream()
@@ -82,6 +90,21 @@ class QuestionAndAnswerManagerTest {
 
         } catch (NotEnoughQuestionsException e) {
             fail();
+        }
+    }
+
+    @Test
+    void getQuestionsWithPossibleAnswersNoUnnecessaryRequests(){
+        try{
+            //Act
+            for (int i = 0; i < maxAmountPerRequest; i++){
+                questionAndAnswerManager.getQuestionsWithPossibleAnswers(1);
+            }
+
+            //Assert
+            assertEquals(questionProvider.requestsMade, 1);
+        } catch (NotEnoughQuestionsException e) {
+            fail(e.getMessage(), e);
         }
     }
 
