@@ -8,9 +8,14 @@ import java.util.List;
 
 @RestController
 public class QuestionsController {
+    private final QuestionAndAnswerManager manager = new QuestionAndAnswerManager(new OpentdbQuestionProvider(new OpentdbHandler()));
 
     @GetMapping("/questions")
     public List<QuestionWithPossibleAnswers> Questions(){
-        return new ArrayList<>();
+        try {
+            return manager.getQuestionsWithPossibleAnswers(5);
+        } catch (NotEnoughQuestionsException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

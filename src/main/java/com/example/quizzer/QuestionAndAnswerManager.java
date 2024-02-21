@@ -4,7 +4,6 @@ import java.util.*;
 
 public class QuestionAndAnswerManager implements IQuestionAndAnswerManager {
     private final IQuestionProvider questionProvider;
-
     private int counter = 0;
 
     private List<QuestionWithAnswerAndFalseAnswers> questionStack = new LinkedList<>();
@@ -20,7 +19,7 @@ public class QuestionAndAnswerManager implements IQuestionAndAnswerManager {
     }
 
     private QuestionWithPossibleAnswers HideAnswer(QuestionWithAnswerAndFalseAnswers questionWithAnswerAndFalseAnswers) {
-        List<String> possibleAnswers = questionWithAnswerAndFalseAnswers.falseAnswers();
+        List<String> possibleAnswers = new ArrayList<>(questionWithAnswerAndFalseAnswers.falseAnswers());
         possibleAnswers.add(questionWithAnswerAndFalseAnswers.answer());
 
         return new QuestionWithPossibleAnswers(
