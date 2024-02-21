@@ -1,5 +1,6 @@
 package com.example.quizzer;
 
+import com.example.quizzer.utils.LimitedHashMap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

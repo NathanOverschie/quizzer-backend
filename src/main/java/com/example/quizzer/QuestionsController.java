@@ -1,13 +1,14 @@
 package com.example.quizzer;
 
+import com.example.quizzer.dataproviders.OpentdbHandler;
+import com.example.quizzer.dataproviders.OpentdbQuestionProvider;
+import com.example.quizzer.utils.CorrectAnswerNotFoundException;
+import com.example.quizzer.utils.NotEnoughQuestionsException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 public class QuestionsController {

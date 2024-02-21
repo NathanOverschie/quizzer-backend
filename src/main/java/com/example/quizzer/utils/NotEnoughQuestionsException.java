@@ -1,3 +1,3 @@
-package com.example.quizzer;
+package com.example.quizzer.utils;
 
 public class NotEnoughQuestionsException extends Exception{}

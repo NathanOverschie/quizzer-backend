@@ -1,5 +1,10 @@
 package com.example.quizzer;
 
+import com.example.quizzer.dataproviders.IQuestionProvider;
+import com.example.quizzer.utils.CorrectAnswerNotFoundException;
+import com.example.quizzer.utils.LimitedHashMap;
+import com.example.quizzer.utils.NotEnoughQuestionsException;
+
 import java.util.*;
 
 public class QuestionAndAnswerManager implements IQuestionAndAnswerManager {

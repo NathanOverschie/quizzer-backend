@@ -1,5 +1,8 @@
 package com.example.quizzer;
 
+import com.example.quizzer.dataproviders.IQuestionProvider;
+import com.example.quizzer.utils.CorrectAnswerNotFoundException;
+import com.example.quizzer.utils.NotEnoughQuestionsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +19,7 @@ class QuestionAndAnswerManagerTest {
 
     private static final int maxAmountPerRequest = 50;
 
-    static class fakeQuestionProvider implements IQuestionProvider{
+    static class fakeQuestionProvider implements IQuestionProvider {
         private int counter = 0;
         public int requestsMade = 0;
 

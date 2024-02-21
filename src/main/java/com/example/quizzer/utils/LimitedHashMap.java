@@ -1,4 +1,4 @@
-package com.example.quizzer;
+package com.example.quizzer.utils;
 
 import java.util.*;
 
@@ -6,7 +6,7 @@ public class LimitedHashMap<K, V> extends HashMap<K, V> {
     private final int maxSize;
     private final LinkedList<K> keys;
 
-    LimitedHashMap(int maxSize){
+    public LimitedHashMap(int maxSize){
         super();
         keys = new LinkedList<>();
         this.maxSize = maxSize;

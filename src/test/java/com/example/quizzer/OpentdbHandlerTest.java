@@ -1,5 +1,7 @@
 package com.example.quizzer;
 
+import com.example.quizzer.dataproviders.IQuestionsJSONProvider;
+import com.example.quizzer.dataproviders.OpentdbHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

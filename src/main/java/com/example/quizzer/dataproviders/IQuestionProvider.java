@@ -1,4 +1,6 @@
-package com.example.quizzer;
+package com.example.quizzer.dataproviders;
+
+import com.example.quizzer.QuestionWithAnswerAndFalseAnswers;
 
 import java.util.List;
 

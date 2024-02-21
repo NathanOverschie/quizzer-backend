@@ -1,5 +1,7 @@
-package com.example.quizzer;
+package com.example.quizzer.dataproviders;
 
+import com.example.quizzer.dataproviders.IQuestionsJSONProvider;
+import com.example.quizzer.utils.OpentdbException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

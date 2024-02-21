@@ -1,4 +1,4 @@
-package com.example.quizzer;
+package com.example.quizzer.dataproviders;
 
 import com.fasterxml.jackson.databind.JsonNode;
 public interface IQuestionsJSONProvider {

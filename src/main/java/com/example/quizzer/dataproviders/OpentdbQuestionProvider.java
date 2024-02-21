@@ -1,5 +1,7 @@
-package com.example.quizzer;
+package com.example.quizzer.dataproviders;
 
+import com.example.quizzer.QuestionWithAnswerAndFalseAnswers;
+import com.example.quizzer.utils.OpentdbException;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ import java.util.stream.StreamSupport;
 public class OpentdbQuestionProvider implements IQuestionProvider {
     private final IQuestionsJSONProvider jsonProvider;
 
-    OpentdbQuestionProvider(IQuestionsJSONProvider jsonProvider){
+    public OpentdbQuestionProvider(IQuestionsJSONProvider jsonProvider){
         this.jsonProvider = jsonProvider;
     }
 
