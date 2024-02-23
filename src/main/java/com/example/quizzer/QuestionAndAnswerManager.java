@@ -50,7 +50,7 @@ public class QuestionAndAnswerManager implements IQuestionAndAnswerManager {
         return result;
     }
 
-    private List<QuestionWithAnswerAndFalseAnswers> getViaStack(int amount) throws NotEnoughQuestionsException {
+    private synchronized List<QuestionWithAnswerAndFalseAnswers> getViaStack(int amount) throws NotEnoughQuestionsException {
         while(questionStack.size() < amount){
             try {
                 questionStack.addAll(questionProvider.getMaxQuestionsWithAnswerAndFalseAnswers());
