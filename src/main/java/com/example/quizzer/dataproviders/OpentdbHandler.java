@@ -1,6 +1,5 @@
 package com.example.quizzer.dataproviders;
 
-import com.example.quizzer.dataproviders.IQuestionsJSONProvider;
 import com.example.quizzer.utils.OpentdbException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,13 +12,39 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Handles the retrieval of JSON data from the Open Trivia Database API.
+ * Implements the IQuestionsJSONProvider interface.
+ */
 public class OpentdbHandler implements IQuestionsJSONProvider {
 
+    /**
+     * Base URL for the Open Trivia Database API.
+     */
     private static final String url = "https://opentdb.com/api.php";
+
+    /**
+     * Timestamp of the last request sent to the API.
+     */
     private static Instant lastUsed = null;
+
+    /**
+     * Delay between consecutive requests to the API in milliseconds.
+     */
     private static final int delayBetweenRequestsInMillis = 5000;
+
+    /**
+     * Maximum amount of questions to retrieve from the API per request.
+     */
     private static final int maxAmount = 50;
 
+    /**
+     * Retrieves JSON data containing trivia questions from the Open Trivia Database API.
+     *
+     * @param amount Number of questions to retrieve.
+     * @return JSON data containing trivia questions.
+     * @throws OpentdbException If an error occurs during the retrieval process.
+     */
     public JsonNode getJSON(int amount) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
 
@@ -56,6 +81,12 @@ public class OpentdbHandler implements IQuestionsJSONProvider {
         }
     }
 
+    /**
+     * Retrieves JSON data containing the maximum number of trivia questions from the Open Trivia Database API.
+     *
+     * @return JSON data containing trivia questions.
+     * @throws OpentdbException If an error occurs during the retrieval process.
+     */
     @Override
     public JsonNode getMaxJSON() throws Exception {
         return getJSON(maxAmount);

@@ -2,10 +2,26 @@ package com.example.quizzer.utils;
 
 import java.util.*;
 
+/**
+ * A HashMap implementation with a limited size. If the number of entries exceeds the maximum size specified
+ * during initialization, the oldest entries are removed to maintain the maximum size constraint.
+ *
+ * @param <K> Type of keys.
+ * @param <V> Type of values.
+ */
 public class LimitedHashMap<K, V> extends HashMap<K, V> {
+
+    /** Maximum size of the LimitedHashMap.*/
     private final int maxSize;
+
+    /** List to keep track of insertion order of keys. */
     private final LinkedList<K> keys;
 
+    /**
+     * Constructs a LimitedHashMap with the specified maximum size.
+     *
+     * @param maxSize Maximum size of the LimitedHashMap.
+     */
     public LimitedHashMap(int maxSize){
         super();
         keys = new LinkedList<>();

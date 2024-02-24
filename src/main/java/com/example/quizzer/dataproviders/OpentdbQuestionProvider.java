@@ -22,6 +22,10 @@ import java.util.stream.StreamSupport;
  *
  */
 public class OpentdbQuestionProvider implements IQuestionProvider {
+
+    /**
+     * Instance of the JSON provider used to retrieve JSON data.
+     */
     private final IQuestionsJSONProvider jsonProvider;
 
     public OpentdbQuestionProvider(IQuestionsJSONProvider jsonProvider){
@@ -29,8 +33,11 @@ public class OpentdbQuestionProvider implements IQuestionProvider {
     }
 
     /**
-     * When the json has the input described above, return POJO object, otherwise throws exception
-     * @param jsonNode input json
+     * Converts JSON representation of a question into a POJO object.
+     *
+     * @param jsonNode Input JSON node representing a question.
+     * @return QuestionWithAnswerAndFalseAnswers object representing the question.
+     * @throws OpentdbException If the input JSON does not have the expected structure.
      */
     private QuestionWithAnswerAndFalseAnswers POJOFromJSONQuestion(JsonNode jsonNode) throws OpentdbException {
         JsonNode questionNode = jsonNode.get("question");
@@ -54,6 +61,12 @@ public class OpentdbQuestionProvider implements IQuestionProvider {
                 falseAnswers);
     }
 
+    /**
+     * Retrieves a list of questions with answers and false answers.
+     *
+     * @return List of QuestionWithAnswerAndFalseAnswers objects representing questions.
+     * @throws Exception If an error occurs during the retrieval process.
+     */
     @Override
     public List<QuestionWithAnswerAndFalseAnswers> getMaxQuestionsWithAnswerAndFalseAnswers() throws Exception {
         JsonNode questionsJSON = jsonProvider.getMaxJSON();
